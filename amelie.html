@@ -1,0 +1,267 @@
+<style>
+body{
+margin:0;
+font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+background:black;
+color:white;
+text-align:center;
+overflow:hidden;
+}
+
+/* RIDEAU */
+#curtain{
+position:fixed;
+width:100%;
+height:100%;
+background:linear-gradient(to right,#3b0000,#6b0000);
+z-index:30;
+transition:2s;
+}
+#curtain.open{
+transform:translateY(-100%);
+}
+
+/* FOND ÉTOILÉ */
+.stars{
+position:fixed;
+width:100%;
+height:100%;
+z-index:-1;
+}
+.star{
+position:absolute;
+width:2px;
+height:2px;
+background:white;
+border-radius:50%;
+animation:twinkle 2s infinite alternate;
+}
+@keyframes twinkle{
+from{opacity:0.2;}
+to{opacity:1;}
+}
+
+/* INTRO */
+#intro{
+position:fixed;
+width:100%;
+height:100%;
+background:black;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+z-index:20;
+transition:2s;
+}
+.introBtn{
+padding:15px 30px;
+border-radius:30px;
+border:none;
+background:white;
+color:black;
+font-weight:bold;
+cursor:pointer;
+}
+.fadeOut{opacity:0;visibility:hidden;}
+
+/* LOCK */
+#lock{
+display:none;
+position:fixed;
+width:100%;
+height:100%;
+background:black;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+z-index:10;
+}
+input{
+padding:12px;
+border-radius:25px;
+border:none;
+margin-top:10px;
+text-align:center;
+}
+button{
+padding:12px 25px;
+border-radius:25px;
+border:none;
+margin-top:15px;
+background:white;
+color:black;
+font-weight:bold;
+cursor:pointer;
+}
+
+#main{display:none;padding:20px;}
+.section{margin-top:50px;}
+
+.gift{
+margin-top:40px;
+font-size:60px;
+cursor:pointer;
+transition:0.4s;
+}
+.gift.open{transform:scale(1.6);}
+
+#ring{
+display:none;
+font-size:70px;
+margin-top:20px;
+animation:fadeRing 3s forwards;
+}
+@keyframes fadeRing{
+from{opacity:0;transform:scale(0);}
+to{opacity:1;transform:scale(1);}
+}
+
+#finalMessage{
+display:none;
+font-size:22px;
+margin-top:25px;
+line-height:1.6;
+animation:fadeFinal 3s forwards;
+}
+@keyframes fadeFinal{
+from{opacity:0;}
+to{opacity:1;}
+}
+
+.shooting-star{
+position:fixed;
+top:20%;
+left:-100px;
+font-size:20px;
+animation:shoot 2s linear forwards;
+}
+@keyframes shoot{
+to{transform:translateX(120vw) translateY(100px);opacity:0;}
+}
+
+.heart{
+position:fixed;
+font-size:20px;
+animation:floatUp 3s forwards;
+}
+@keyframes floatUp{
+to{transform:translateY(-200px);opacity:0;}
+}
+
+iframe{
+margin-top:15px;
+border-radius:12px;
+}
+</style>
+
+<div id="curtain"></div>
+<div class="stars" id="stars"></div>
+
+<div id="intro">
+<h1>Mets le son… ❤️</h1>
+<button class="introBtn" onclick="startExperience()">Lancer l’expérience</button>
+</div>
+
+<div id="lock">
+<h1>Accès privé ❤️</h1>
+<p>Mot de passe :</p>
+<input type="password" id="pwd">
+<button onclick="unlock()">Entrer</button>
+</div>
+
+<div id="main">
+
+<h1>Amelie ❤️</h1>
+
+<div class="section">
+<h2>Notre chanson 🎵</h2>
+<iframe
+src="https://open.spotify.com/embed/track/5GqhvC7TI8HsqcKJmtMdkI"
+width="300"
+height="80"
+frameborder="0"
+allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
+</iframe>
+</div>
+
+<div class="section">
+<h2>Ton cadeau 🎁</h2>
+<div class="gift" onclick="openGift()">🎁</div>
+
+<p id="giftText" style="display:none;">
+Cette soirée marque le début… ❤️
+</p>
+
+<div id="ring">💍</div>
+
+<p id="finalMessage">
+✨ Cette soirée marque le commencement d’une promesse…<br><br>
+Parce qu’à cette même date l’année prochaine,<br>
+je te marierai. 💍❤️
+</p>
+
+</div>
+
+</div>
+
+<script>
+const starsContainer=document.getElementById("stars");
+for(let i=0;i<150;i++){
+let star=document.createElement("div");
+star.className="star";
+star.style.top=Math.random()*100+"%";
+star.style.left=Math.random()*100+"%";
+starsContainer.appendChild(star);
+}
+
+function startExperience(){
+document.getElementById("intro").classList.add("fadeOut");
+setTimeout(()=>{
+document.getElementById("lock").style.display="flex";
+},2000);
+}
+
+function explodeHearts(){
+for(let i=0;i<30;i++){
+let heart=document.createElement("div");
+heart.className="heart";
+heart.innerHTML="❤️";
+heart.style.left=(window.innerWidth/2 + (Math.random()*200-100))+"px";
+heart.style.top=(window.innerHeight/2)+"px";
+document.body.appendChild(heart);
+setTimeout(()=>heart.remove(),3000);
+}
+}
+
+function shootingStar(){
+let star=document.createElement("div");
+star.className="shooting-star";
+star.innerHTML="🌠";
+document.body.appendChild(star);
+setTimeout(()=>star.remove(),2000);
+}
+
+function unlock(){
+if(document.getElementById("pwd").value==="1502025"){
+document.getElementById("curtain").classList.add("open");
+explodeHearts();
+setTimeout(()=>{
+document.getElementById("lock").style.display="none";
+document.getElementById("main").style.display="block";
+},2000);
+}else{
+alert("Mauvais mot de passe 😏");
+}
+}
+
+function openGift(){
+explodeHearts();
+shootingStar();
+if(navigator.vibrate){navigator.vibrate(200);}
+document.querySelector(".gift").classList.add("open");
+document.getElementById("giftText").style.display="block";
+document.getElementById("ring").style.display="block";
+document.getElementById("finalMessage").style.display="block";
+}
+</script>
